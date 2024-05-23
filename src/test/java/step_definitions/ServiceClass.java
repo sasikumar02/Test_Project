@@ -1,5 +1,7 @@
 package step_definitions;
 
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import pages.*;
 import report.ExtendCucumberReport;
@@ -9,16 +11,14 @@ public class ServiceClass extends BaseClass {
     Scenario scenario = null;
     ExtendCucumberReport report = new ExtendCucumberReport();
 
-    @io.cucumber.java.Before
-    public void setup(Scenario scenario) {
+    @Before
+    public void initiateBrowser(Scenario scenario) throws Exception {
+        System.out.println("********* before hooks");
         this.scenario = scenario;
-    }
-    @io.cucumber.java.Before
-    public void initiateBrowser() throws Exception {
-        //initializeBrowser();
+        System.out.println("Scenario name : "+scenario.getName());
         DriverFactory.initialiseBrowser(scenario);
     }
-    @io.cucumber.java.After
+    @After
     public void after() throws Exception {
         closeBrowser();
         System.out.println("after step--"+publicURL);
@@ -26,15 +26,4 @@ public class ServiceClass extends BaseClass {
         report.attachToReport("text/plain", publicURL, "Browser Stack video Link");
         System.out.println("before send email class");
     }
-
-//    @AfterAll
-//    public static void afterScenario() {
-//        //SendEmail.sendEmailWay();
-//        //String reportPath = "D:\\Demo\\target\\cucumber-reports\\cucumber.html";
-//        copyReport();
-//        String targetFolder = "D:\\Demo\\src\\test\\resources\\cucumber-reports\\";
-//        String reportName = "cucumber.html";
-//        String reportPath = new File(targetFolder, reportName).getAbsolutePath();
-//        SendEmail.sendEmailWay(reportPath);
-//    }
 }

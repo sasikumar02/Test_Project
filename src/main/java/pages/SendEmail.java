@@ -2,6 +2,8 @@ package pages;
 
 
 
+import common.EmailPropertiesLoader;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.mail.*;
@@ -30,6 +32,11 @@ public class SendEmail extends BaseClass{
         final String username = "kannansasi1997@gmail.com"; // Your email address
         final String password = "qtea txwe diln imfm"; // Your email password
 
+        EmailPropertiesLoader emailPropertiesLoader = new EmailPropertiesLoader("email.properties");
+        Properties emailProperties = emailPropertiesLoader.getProperties();
+        String recipients = emailProperties.getProperty("recipients");
+        System.out.println("Recipients : "+recipients);
+
         // Get system properties
         Properties properties = System.getProperties();
 
@@ -40,6 +47,7 @@ public class SendEmail extends BaseClass{
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.ssl.enable", "true");
         //properties.put("mail.smtp.starttls.enable", "true");
+
 
 
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
@@ -78,7 +86,10 @@ public class SendEmail extends BaseClass{
             message.setFrom(new InternetAddress(from));
 
             // Set To: header field of the header.
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+           // message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            for (String recipient : recipients.split(",")) {
+                message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient.trim()));
+            }
 
             // Set Subject: header field
             message.setSubject("Cucumber Report");
