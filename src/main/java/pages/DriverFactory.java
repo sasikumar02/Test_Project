@@ -74,24 +74,17 @@ public class DriverFactory {
             case "Android":
                 switch(browserName){
                     case "Chrome":
-                        caps.setCapability("browserName", "Chrome");
-                        caps.setCapability("device", "Google Pixel 3");
-                        caps.setCapability("realMobile", "true");
-                        caps.setCapability("os_version", "9.0");
+                        //caps.setCapability("browserName", "Chrome");
+                        caps.setCapability("device", "Samsung Galaxy S23");
+                        //caps.setCapability("realMobile", "true");
+                        caps.setCapability("app","com.pnc.ecommerce.mobile");
+                        caps.setCapability("os_version", "13.0");
                         caps.setCapability("name", scenario.getName());
                         break;
                 }
                 break;
         }
-        if (driver == null) {
-            System.out.println("Driver not initialized. Check browser/platform configuration.");
-        } else {
-            try {
-                driver = new RemoteWebDriver(new URL(url), caps);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
+        driver = new RemoteWebDriver(new URL(url), caps);
         getPublicURLFromBS();
 
     }
