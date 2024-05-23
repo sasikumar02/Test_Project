@@ -68,10 +68,10 @@ public class ExtendCucumberReport implements ReportEvents {
     @Override
     public void testRunFinish() throws InterruptedException {
         //String reportPath = "D:\\Demo\\target\\cucumber-reports\\cucumber.html";
-        Thread.sleep(3000);
-        String targetFolder = "D:\\Demo\\target\\Extent-Report\\";
-        String reportName = "extent.html";
-        String reportPath = new File(targetFolder, reportName).getAbsolutePath();
-        SendEmail.sendEmailWay(reportPath);
+//        Thread.sleep(3000);
+//        String targetFolder = "D:\\Demo\\target\\Extent-Report\\";
+//        String reportName = "extent.html";
+//        String reportPath = new File(targetFolder, reportName).getAbsolutePath();
+//        SendEmail.sendEmailWay(reportPath);
     }
 }
