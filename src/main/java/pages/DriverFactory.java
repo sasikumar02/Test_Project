@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
@@ -20,33 +21,94 @@ public class DriverFactory {
     public static final String url = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub";
     public static void initialiseBrowser(Scenario scenario) throws Exception {
         DesiredCapabilities caps = new DesiredCapabilities();
+        String browserName=ConfigLoader.getProperty("browser");
+        String platform=ConfigLoader.getProperty("platform");
+        switch(platform){
+            case "Windows":
+                switch (browserName){
+                    case "Chrome":
+                        caps.setCapability("os", "Windows");
+                        caps.setCapability("os_version", "10");
+                        caps.setCapability("browser", ConfigLoader.getProperty("browser"));
+                        caps.setCapability("browser_version", "80");
+                        caps.setCapability("name", scenario.getName());
+                        break;
+                    case "IE":
+                        caps.setCapability("browser", "IE");
+                        caps.setCapability("browser_version", "11.0");
+                        caps.setCapability("os", "Windows");
+                        caps.setCapability("os_version", "10");
+                        caps.setCapability("name", scenario.getName());
+                        break;
+                    case "Firefox":
+                        caps.setCapability("browser", "Firefox");
+                        caps.setCapability("browser_version", "latest");
+                        caps.setCapability("os", "Windows");
+                        caps.setCapability("os_version", "10");
+                        caps.setCapability("name", scenario.getName());
+                        break;
+                }
+                break;
+            case "Mac":
+                switch(browserName){
+                    case "Safari":
+                        caps.setCapability("browser", "Safari");
+                        caps.setCapability("browser_version", "latest");
+                        caps.setCapability("os", "OS X");
+                        caps.setCapability("os_version", "Catalina");
+                        caps.setCapability("name", scenario.getName());
+                        break;
+                }
+                break;
+            case "iOS":
+                switch(browserName){
+                    case "Safari":
+                        caps.setCapability("browserName", "Safari");
+                        caps.setCapability("device", "iPhone 12");
+                        caps.setCapability("realMobile", "true");
+                        caps.setCapability("os_version", "14");
+                        caps.setCapability("name", scenario.getName());
+                        break;
+                }
+                break;
+            case "Android":
+                switch(browserName){
+                    case "Chrome":
+                        caps.setCapability("browserName", "Chrome");
+                        caps.setCapability("device", "Google Pixel 3");
+                        caps.setCapability("realMobile", "true");
+                        caps.setCapability("os_version", "9.0");
+                        caps.setCapability("name", scenario.getName());
+                        break;
+                }
+                break;
+        }
+        if (driver == null) {
+            System.out.println("Driver not initialized. Check browser/platform configuration.");
+        } else {
+            try {
+                driver = new RemoteWebDriver(new URL(url), caps);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+        getPublicURLFromBS();
 
-        caps.setCapability("os", "Windows");
-        caps.setCapability("os_version", "10");
-        caps.setCapability("browser", ConfigLoader.getProperty("browser"));
-        caps.setCapability("browser_version", "80");
-        //caps.setCapability("name", "sasikumar's First Test");
-        caps.setCapability("name", scenario.getName());
-        driver = new RemoteWebDriver(new URL(url), caps);
-        JavascriptExecutor jse = (JavascriptExecutor)driver;
-        Object response = jse.executeScript("browserstack_executor: {\"action\": \"getSessionDetails\"}");
-        //JSONObject json = (JSONObject) new JSONParser().parse((String) response);
-        Gson gson = new Gson();
-        Map<String,String> result= gson.fromJson((String) response, Map.class);
-        publicURL=result.get("public_url");
-        //publicURL =  responseElement.get("public_url");
-        System.out.println("session id -- before " + publicURL);
+    }
+public static void getPublicURLFromBS() {
+            JavascriptExecutor jse = (JavascriptExecutor) driver;
+            Object response = jse.executeScript("browserstack_executor: {\"action\": \"getSessionDetails\"}");
+            Gson gson = new Gson();
+            Map<String, String> result = gson.fromJson((String) response, Map.class);
+            publicURL = result.get("public_url");
+            System.out.println("session id -- before " + publicURL);
+        }
+}
 
-
-// Navigating through the URL
+//        Navigating through the URL
 //        driver.get("http://www.google.com");
-////Locating the search box of google
 //        WebElement element = driver.findElement(By.name("q"));
-//// Sending browserstack keyword for search
 //        element.sendKeys("BrowserStack");
 //        element.submit();
-//
 //        System.out.println(driver.getTitle());
 //        driver.quit();
-    }
-}
