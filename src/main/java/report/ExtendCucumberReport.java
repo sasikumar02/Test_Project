@@ -50,6 +50,9 @@ public class ExtendCucumberReport implements ReportEvents {
     public void testStepFinish(Result result) {
 
     }
+    public void attachScreenshotToReport(String screenshotPath) throws IOException {
+        test.addScreenCaptureFromPath(screenshotPath);
+    }
 
     @Override
     public void testScenarioFinish() {

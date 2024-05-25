@@ -18,6 +18,8 @@ public class DriverFactory {
     public static String publicURL;
     public static final String USERNAME = "kannanre_3IAdJY";
     public static final String AUTOMATE_KEY = "Nx8ZDFbUtWU49hoMQtsS";
+//    public static final String USERNAME = "acchuthanthasma_Iazcdt";
+//    public static final String AUTOMATE_KEY = "d2L8nTGV7hqPhRxwvf7Q";
     public static final String url = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub";
     public static void initialiseBrowser(Scenario scenario) throws Exception {
         DesiredCapabilities caps = new DesiredCapabilities();

@@ -1,16 +1,25 @@
 package step_definitions;
 
 
+import io.cucumber.java.AfterStep;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.restassured.response.Response;
 import pages.BaseClass;
 import pages.HomePage;
+import report.ExtendCucumberReport;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoginStepDef extends HomePage{
     Map<String,String> data=new HashMap<>();
+    ExtendCucumberReport report = new ExtendCucumberReport();
+    @AfterStep
+    public void afterStepCompletes() throws Exception {
+        String screenshotPath = takeSnapShot("StepScreenshot_" + System.currentTimeMillis());
+        report.attachScreenshotToReport(screenshotPath);
+    }
     @Given("Launch the site")
     public void launchSite(){
         launchURL();
