@@ -12,11 +12,14 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,12 +44,6 @@ public void launchURL(){
         //takeSnapShot(scenario);
         Thread.sleep(2000);
         driver.quit();
-    }
-
-    public static void takeSnapShot(Scenario scenario) throws Exception{
-        TakesScreenshot ts=(TakesScreenshot) driver;
-        byte[] screenshot=ts.getScreenshotAs(OutputType.BYTES);
-        scenario.attach(screenshot,"image/png","Screenshot Attached");
     }
 
     public static Map<String, String> readJsonElement(String fileName,
@@ -84,5 +81,15 @@ public void launchURL(){
                 .header("Content-Type", "application/json")
                 .body(body)
                 .put(url);
+    }
+    public static String takeSnapShot(String screenshotName) throws Exception{
+        TakesScreenshot ts = (TakesScreenshot) driver;
+        byte[] source = ts.getScreenshotAs(OutputType.BYTES);
+        String dest = "D:/Demo_Project/target/Extent-Report/" + screenshotName + ".png";
+        File destination = new File(dest);
+        try (InputStream inputStream = new ByteArrayInputStream(source)) {
+            FileUtils.copyInputStreamToFile(inputStream, destination);
+        }
+        return dest;
     }
 }

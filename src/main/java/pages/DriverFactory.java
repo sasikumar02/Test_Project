@@ -18,6 +18,8 @@ public class DriverFactory {
     public static String publicURL;
     public static final String USERNAME = "kannanre_3IAdJY";
     public static final String AUTOMATE_KEY = "Nx8ZDFbUtWU49hoMQtsS";
+//    public static final String USERNAME = "acchuthanthasma_Iazcdt";
+//    public static final String AUTOMATE_KEY = "d2L8nTGV7hqPhRxwvf7Q";
     public static final String url = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub";
     public static void initialiseBrowser(Scenario scenario) throws Exception {
         DesiredCapabilities caps = new DesiredCapabilities();
@@ -74,24 +76,17 @@ public class DriverFactory {
             case "Android":
                 switch(browserName){
                     case "Chrome":
-                        caps.setCapability("browserName", "Chrome");
-                        caps.setCapability("device", "Google Pixel 3");
-                        caps.setCapability("realMobile", "true");
-                        caps.setCapability("os_version", "9.0");
+                        //caps.setCapability("browserName", "Chrome");
+                        caps.setCapability("device", "Samsung Galaxy S23");
+                        //caps.setCapability("realMobile", "true");
+                        caps.setCapability("app","com.pnc.ecommerce.mobile");
+                        caps.setCapability("os_version", "13.0");
                         caps.setCapability("name", scenario.getName());
                         break;
                 }
                 break;
         }
-        if (driver == null) {
-            System.out.println("Driver not initialized. Check browser/platform configuration.");
-        } else {
-            try {
-                driver = new RemoteWebDriver(new URL(url), caps);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
+        driver = new RemoteWebDriver(new URL(url), caps);
         getPublicURLFromBS();
 
     }
